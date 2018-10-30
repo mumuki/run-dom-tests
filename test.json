@@ -1,0 +1,4 @@
+{
+  "html": "<html><head><title>old title</title><script>document.title = atob('VGl0bGUgY2hhbmdlZCEgI0hBQ0tFUk1BTg==')</script></head><body></body></html>",
+  "tests": "describe('dom things', function() {\n    it('changes the page title', function() {\n      oldDocument.title.should.be.eql('old title');\n      document.title.should.be.eql('Title changed! #HACKERMAN');\n    });\n  });"
+}
