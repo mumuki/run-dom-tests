@@ -25,7 +25,7 @@ function runTests(testCode) {
   `);
 
   const Mocha = require("mocha");
-  const mocha = new Mocha();
+  const mocha = new Mocha({ reporter: "json" });
   mocha.addFile(tempFile.name);
 
   mocha.run((failures) => {

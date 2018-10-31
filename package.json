@@ -1,6 +1,6 @@
 {
   "name": "run-dom-tests",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Run mocha tests on node.js using a virtual DOM.",
   "main": "index.js",
   "scripts": {
