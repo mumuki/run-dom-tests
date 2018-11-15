@@ -40,8 +40,8 @@ jsdom.env(request.html, [], (errors, window) => {
   global.oldDocument = _.cloneDeep(document);
   const context = _.assign({}, browserPolyfills, { window, document });
   require("./browser-test-polyfills");
-  _dispatch_("DOMContentLoaded");
 
   runScripts(document, context);
+  _dispatch_("DOMContentLoaded");
   runTests(request.tests);
 });
