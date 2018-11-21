@@ -10,5 +10,9 @@ const test = require(`./${path}`);
 const tempFile = tmp.fileSync();
 fs.writeFileSync(tempFile.name, JSON.stringify(test));
 
-const output = childProcess.execSync(`./run-dom-tests.js ${tempFile.name} --verbose`);
-console.log(output.toString());
+try {
+  const output = childProcess.execSync(`./run-dom-tests.js ${tempFile.name} --verbose`);
+  console.log(output.toString());
+} catch (e) {
+  console.log(e.stdout.toString());
+}
