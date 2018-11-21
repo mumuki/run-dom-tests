@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const browserPolyfills = require("./browser-polyfills");
+const Mocha = require("mocha");
 const jsdom = require("node-jsdom");
 const safeEval = require("safe-eval");
 const tmp = require("tmp");
@@ -9,6 +10,7 @@ const _ = require("lodash");
 
 const path = process.argv[2];
 const ignoreErrors = process.argv[3] === "--ignore-errors";
+const verboseReporter = process.argv[3] === "--verbose";
 const request = JSON.parse(fs.readFileSync(path).toString());
 
 function runScripts(node, context) {
@@ -25,8 +27,7 @@ function runTests(testCode) {
     ${testCode}
   `);
 
-  const Mocha = require("mocha");
-  const mocha = new Mocha({ reporter: "json" });
+  const mocha = new Mocha({ reporter: verboseReporter ? "spec" : "json" });
   mocha.addFile(tempFile.name);
 
   mocha.run((failures) => {
