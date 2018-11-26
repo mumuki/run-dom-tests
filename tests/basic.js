@@ -4,6 +4,7 @@ module.exports = {
   <head>
     <title>old title</title>
     <script>
+      var foo = 2;
       document.title = atob("VGl0bGUgY2hhbmdlZCEgI0hBQ0tFUk1BTg==");
     </script>
   </head>

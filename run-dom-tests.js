@@ -16,8 +16,12 @@ const request = JSON.parse(fs.readFileSync(path).toString());
 function runScripts(node, context) {
   _.each(node.getElementsByTagName("script"), (child) => {
     const code = child.text || child.textContent || child.innerHTML || "";
-    try { safeEval(code, context); } catch (e) { if (!ignoreErrors) throw e; }
+    try { safeEval(wrapCode(code), context); } catch (e) { if (!ignoreErrors) throw e; }
   });
+}
+
+function wrapCode(code) {
+  return `(function() {${code}})()`;
 }
 
 function runTests(testCode) {
