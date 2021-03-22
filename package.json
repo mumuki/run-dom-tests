@@ -4,7 +4,7 @@
   "description": "Run mocha tests on node.js using a virtual DOM.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./test.js tests/basic.js && ./test.js tests/events.js && ./test.js tests/ajax.js"
   },
   "bin": {
     "run-dom-tests": "./run-dom-tests.js"
