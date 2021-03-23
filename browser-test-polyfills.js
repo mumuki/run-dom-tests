@@ -20,7 +20,7 @@ const WAIT_FOR_TIMEOUT = 50;
   const single = `_${it}_response_`;
 
   global[single] = null;
-  global[`_shift_${it}_responses_`] = (response) => global[single] || global[list].shift();
+  global[`_shift_${it}_response_`] = () => global[single] || global[list].shift();
 });
 
 global._wait_for_ = (condition, then) => {
