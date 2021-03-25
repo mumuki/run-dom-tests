@@ -28,7 +28,7 @@ global._wait_for_ = (condition, then) => {
     if (!condition()) _wait_for_(condition, then)
     else then();
   }, WAIT_FOR_TIMEOUT);
-;}
+}
 
 /**
  * Public API
