@@ -231,6 +231,10 @@ You can even stub inputs in plain scripts like this...
 
 ```javascript
 describe("User Interactions", () => {
+  beforeEach(() => {
+    _resetUserInteractions_();
+  });
+
   it("allows stubbing script interactions and re-run document", () => {
     _stubPromptResponse_("A Stubbed Alert Message");
 
