@@ -1,3 +1,8 @@
+/**
+ * Polling period of `_waitFor_`
+ *
+ * @type {number}
+ */
 const WAIT_FOR_TIMEOUT = 50;
 
 /**
@@ -23,6 +28,9 @@ const WAIT_FOR_TIMEOUT = 50;
   global[`_shift_${it}_response_`] = () => global[single] || global[list].shift();
 });
 
+/**
+ * @deprecated use `_waitFor_` instead
+ */
 global._wait_for_ = (condition, then) => {
   setTimeout(() => {
     if (!condition()) _wait_for_(condition, then)
