@@ -1,7 +1,7 @@
 run-dom-tests
 =============
 
-Run [mocha](https://mochajs.org/) + [chai](https://www.chaijs.com/plugins/chai-dom/) tests on node.js using a virtual DOM.
+Run [mocha](https://mochajs.org/) + [chai](https://www.chaijs.com/) + [chai-dom](https://www.chaijs.com/plugins/chai-dom/) tests on node.js using a virtual DOM.
 
 # Install
 
@@ -20,7 +20,102 @@ npm test
 
 # Usage sample
 
-## User interactions
+## Document testing
+
+You can make assertions about the `document`, both based on its plain, static structure - `_originalDocument_` - or its dynamic structure `document`. For example, given the following HTML...
+
+```html
+<html>
+  <head>
+    <script>
+      function insertSection() {
+        const secondDiv = document.getElementById("second");
+        const section = document.createElement("section");
+        document.body.insertBefore(section, secondDiv);
+      }
+      document.getElementById("insert-section").addEventListener("click", insertSection);
+      insertSection();
+    </script>
+  </head>
+  <body>
+    <p id="first">
+    This is a paragraph
+    </p>
+
+    <button id="insert-section">Insert a new section</button>
+
+    <p id="second">
+    This is another paragraph
+    </p>
+  </body>
+</html>
+```
+
+...you can write the following tests:
+
+```javascript
+describe("DOM API", function() {
+  // you can validate the static structure of the DOM...
+  context("static dom", () => {
+
+    // ...both using plain chai https://www.chaijs.com/ assertions...
+    it("works with plain assertions", () => {
+      _originalDocument_.getElementsByTagName("p").length.should.eql(2);
+      document.getElementsByTagName("p").length.should.eql(2);
+    })
+
+    // ...or chai-dom https://www.chaijs.com/plugins/chai-dom/ assertions:
+    it("works with mocha-chai assertions", () => {
+      _originalDocument_.body.should.contain("p");
+      _originalDocument_.body.should.not.contain("section");
+      document.getElementsByTagName("p").should.have.length(2);
+      document.getElementById("first").should.exist;
+      document.getElementById("first").should.have.trimmed.text("This is a paragraph");
+    })
+  })
+
+  // you can also validate the
+  // dynamic structure of the DOM just after the initial script tags execution
+  describe("script tags", () => {
+    it("inserts dom elements", () => {
+      _originalDocument_.getElementsByTagName("section").should.have.length(0);
+      document.getElementsByTagName("section").should.have.length(1);
+    });
+  })
+
+  // finally you can interact with the dynamic dom
+  // through events and make assertions about them
+  describe("event handlers", () => {
+    beforeEach(() => {
+      // if your test mutates the DOM
+      // you will need to reset document to a fresh state
+      // before each test
+      _resetDocument_();
+    });
+
+    it("inserts dom elements after a single event", () => {
+      const button = document.getElementById("insert-section");
+
+      _dispatch_("click", button);
+
+      document.getElementsByTagName("section").should.have.length(2);
+    });
+
+    it("inserts dom elements after multiple events", () => {
+      const button = document.getElementById("insert-section");
+
+      _dispatch_("click", button);
+      _dispatch_("click", button);
+      _dispatch_("click", button);
+
+      document.getElementsByTagName("section").should.have.length(4);
+    });
+  });
+});
+```
+
+
+## User interactions testing
 
 User interactions like `alert` and `prompt` can be tested by stubbing user responses using `_stubXxxResponse_` and checking prompted messages with `_shiftXxxMessage_`.
 
@@ -116,7 +211,7 @@ describe("User interactions", () => {
 });
 ```
 
-## HTTP Interactions
+## HTTP interactions testing
 
 HTTP Interaction tests are are built on top of [nock](https://github.com/nock/nock), using the `_nock_` object.
 

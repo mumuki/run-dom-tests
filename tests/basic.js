@@ -7,18 +7,6 @@ module.exports = {
       var foo = 2;
       document.title = atob("VGl0bGUgY2hhbmdlZCEgI0hBQ0tFUk1BTg==");
     </script>
-
-
-    <p id="first">
-    This is a paragraph
-    </p>
-
-    <button id="insert-section">Insert a new section</button>
-
-    <p id="second">
-    This is another paragraph
-    </p>
-
     <script>
       function insertSection() {
         const secondDiv = document.getElementById("second");
@@ -28,9 +16,17 @@ module.exports = {
       document.getElementById("insert-section").addEventListener("click", insertSection);
       insertSection();
     </script>
-
   </head>
   <body>
+    <p id="first">
+    This is a paragraph
+    </p>
+
+    <button id="insert-section">Insert a new section</button>
+
+    <p id="second">
+    This is another paragraph
+    </p>
   </body>
 </html>
 `,
@@ -68,8 +64,8 @@ describe("dom things", function() {
       });
 
       it("inserts dom elements", () => {
-        _originalDocument_.getElementsByTagName("section").length.should.eql(0);
-        document.getElementsByTagName("section").length.should.eql(1);
+        _originalDocument_.getElementsByTagName("section").should.have.length(0);
+        document.getElementsByTagName("section").should.have.length(1);
       });
     })
 
@@ -83,8 +79,8 @@ describe("dom things", function() {
 
         _dispatch_("click", button);
 
-        _originalDocument_.getElementsByTagName("section").length.should.eql(0);
-        document.getElementsByTagName("section").length.should.eql(2);
+        _originalDocument_.getElementsByTagName("section").should.have.length(0);
+        document.getElementsByTagName("section").should.have.length(2);
       });
 
       it("inserts dom elements after multiple events", () => {
@@ -94,8 +90,8 @@ describe("dom things", function() {
         _dispatch_("click", button);
         _dispatch_("click", button);
 
-        _originalDocument_.getElementsByTagName("section").length.should.eql(0);
-        document.getElementsByTagName("section").length.should.eql(4);
+        _originalDocument_.getElementsByTagName("section").should.have.length(0);
+        document.getElementsByTagName("section").should.have.length(4);
       });
     })
   })

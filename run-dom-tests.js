@@ -42,7 +42,9 @@ function runTests(testCode) {
 }
 
 /**
- * @deprecated use `_originalDocument_` instead
+ * Use `_originalDocument_` instead
+ *
+ * @deprecated
  **/
 global.oldDocument = null;
 
