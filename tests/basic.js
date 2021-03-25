@@ -46,9 +46,19 @@ describe("dom things", function() {
   })
 
   context('current API', () => {
-    it("handles static dom", () => {
-      _originalDocument_.getElementsByTagName("p").length.should.eql(2);
-      document.getElementsByTagName("p").length.should.eql(2);
+    context("static dom", () => {
+      it("works with plain assertions", () => {
+        _originalDocument_.getElementsByTagName("p").length.should.eql(2);
+        document.getElementsByTagName("p").length.should.eql(2);
+      })
+
+      it("works with mocha-chai assertions", () => {
+        _originalDocument_.body.should.contain("p");
+        _originalDocument_.body.should.not.contain("section");
+        document.getElementsByTagName("p").should.have.length(2);
+        document.getElementById("first").should.exist;
+        document.getElementById("first").should.have.trimmed.text("This is a paragraph");
+      })
     })
 
     describe("script tags", () => {
