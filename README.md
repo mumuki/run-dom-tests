@@ -1,7 +1,7 @@
 run-dom-tests
 =============
 
-Run mocha tests on node.js using a virtual DOM.
+Run [mocha](https://mochajs.org/) + [chai](https://www.chaijs.com/plugins/chai-dom/) tests on node.js using a virtual DOM.
 
 # Install
 
@@ -22,7 +22,9 @@ npm test
 
 ## User interactions
 
-Given the following HTML document...
+User interactions like `alert` and `prompt` can be tested by stubbing user responses using `_stubXxxResponse_` and checking prompted messages with `_shiftXxxMessage_`.
+
+For example given the following HTML document...
 
 ```html
 <html>
@@ -54,9 +56,15 @@ Given the following HTML document...
 
 
 ```javascript
-describe("API", () => {
+describe("User interactions", () => {
   beforeEach(() => {
+    // call before each test in
+    // order to clear user interactions registered and tested
+    // through _stubXxxResponse_ and _shiftXxxMessage_
     _resetInteractions_();
+
+    // if you also need to reset the document state
+    // you can call `_resetDocument_()`
   })
 
   it("allows stubbing sequential confirm interaction", function() {
@@ -104,6 +112,72 @@ describe("API", () => {
 
     _alertMessagesCount_().should.eql(0);
     _promptMessagesCount_().should.eql(3);
+  });
+});
+```
+
+## HTTP Interactions
+
+HTTP Interaction tests are are built on top of [nock](https://github.com/nock/nock), using the `_nock_` object.
+
+Given the following HTML document...
+
+```html
+<html>
+  <head>
+    <title>ajax</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector("#get-data").addEventListener("click", () => {
+          fetch("https://some-domain.com/some-data.json")
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              document.querySelector("#data").innerHTML = data.content;
+            });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <button id="get-data">GET DATA NOW!</button>
+    </div>
+
+    <h1>Remote data:</h1>
+    <pre id="data">Nothing yet...</pre>
+  </body>
+</html>
+```
+
+...you can write the following HTTP interaction tests:
+
+
+```javascript
+describe("HTTP Interactions", function() {
+  beforeEach(() => {
+    // resets all user interactions,
+    // dom state and http interactions
+    _resetAll_();
+
+    // if only http interactions need to be reseted,
+    // call _resetNock_() instead
+  });
+
+  it("shows the downloaded content when the button is clicked", function(done) {
+    document.querySelector("#data").innerHTML.should.eql("Nothing yet...");
+
+    const mockedGet = _nock_("https://some-domain.com/")
+      .get("/some-data.json")
+      .reply(200, { content: "Some remote data" });
+
+    _dispatch_('click', document.querySelector("#get-data"));
+
+    _waitFor_(() => mockedGet.isDone(), () => {
+      document.querySelector("#data").innerHTML.should.eql("Some remote data");
+      done();
+    });
   });
 });
 ```
@@ -426,4 +500,4 @@ and then runs its scripts again.
 ## \_resetAll\_()
 Resets the document, interactions and nock state
 
-**Kind**: global function  
+**Kind**: global function
