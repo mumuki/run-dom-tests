@@ -6,7 +6,8 @@ module.exports = {
   </head>
   <body>
     <script>
-      alert("Initial Alert")
+      let message = prompt("insert an alert message");
+      alert(message || "Initial Alert")
     </script>
     <button id="alert">Alert</button>
     <button id="confirm">Confirm</button>
@@ -44,7 +45,7 @@ describe("events", function() {
       });
     });
 
-    context("with hard reset", () => {
+    context("with all reset", () => {
       it("should have pending messages", () => {
         _resetAll_();
         _alertMessagesCount_().should.eql(1);
@@ -52,10 +53,10 @@ describe("events", function() {
       });
     });
 
-    context("with soft reset", () => {
+    context("with user interaction reset", () => {
       beforeEach(() => {
         _resetUserInteractions_();
-      })
+      });
 
       it("should have no pending messages", () => {
         _alertMessagesCount_().should.eql(0);
@@ -148,6 +149,15 @@ describe("events", function() {
 
         _alertMessagesCount_().should.eql(0);
         _confirmMessagesCount_().should.eql(0);
+      });
+
+      it("allows stubbing script interactions and re-run document", () => {
+        _stubPromptResponse_("A Stubbed Alert Message");
+
+        _resetDocument_();
+
+        _alertMessagesCount_().should.eql(1);
+        "A Stubbed Alert Message".should.eql(_shiftAlertMessage_());
       });
     });
   })

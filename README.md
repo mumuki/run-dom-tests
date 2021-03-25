@@ -211,6 +211,39 @@ describe("User interactions", () => {
 });
 ```
 
+You can even stub inputs in plain scripts like this...
+
+```html
+<html>
+  <head>
+    <title>events</title>
+  </head>
+  <body>
+    <script>
+      let message = prompt("insert an alert message");
+      alert(message || "Initial Alert")
+    </script>
+  </body>
+</html>
+```
+
+...by using `_resetDocument_()` right after calling `_stubXxxResponse_()`:
+
+```javascript
+describe("User Interactions", () => {
+  it("allows stubbing script interactions and re-run document", () => {
+    _stubPromptResponse_("A Stubbed Alert Message");
+
+    _resetDocument_();
+
+    _alertMessagesCount_().should.eql(1);
+    "A Stubbed Alert Message".should.eql(_shiftAlertMessage_());
+  });
+})
+```
+
+
+
 ## HTTP interactions testing
 
 HTTP Interaction tests are are built on top of [nock](https://github.com/nock/nock), using the `_nock_` object.
