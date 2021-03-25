@@ -98,7 +98,7 @@ global._shiftAlertMessage_ = () => global._alert_messages_.shift();
  * Subsequent calls to this function will produce different results. When there are no more
  * confirm messages to dequeue, undefined is returned
  *
- * @returns {string} the first pending confirm message
+ * @returns {boolean} the first pending confirm message
  */
 global._shiftConfirmMessage_ = () => global._confirm_messages_.shift();
 
@@ -135,7 +135,7 @@ global._confirmMessagesCount_ = () => global._confirm_messages_.length;
 global._promptMessagesCount_ = () => global._prompt_messages_.length;
 
 /**
- * Reset all interactions
+ * Reset all stubs and messages
  */
 global._resetInteractions_ = () => {
   global._alert_messages_ = [];
