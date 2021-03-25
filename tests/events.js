@@ -5,6 +5,9 @@ module.exports = {
     <title>events</title>
   </head>
   <body>
+    <script>
+      alert("Initial Alert")
+    </script>
     <button id="alert">Alert</button>
     <button id="confirm">Confirm</button>
     <button id="prompt">Prompt</button>
@@ -34,102 +37,119 @@ module.exports = {
   "tests": `
 describe("events", function() {
   context("current API", () => {
-    beforeEach(() => {
-      _resetUserInteractions_();
-    })
-
-    it("shows an alert when the button is clicked", function() {
-      _dispatch_("click", document.querySelector("#alert"));
-
-      _shiftAlertMessage_().should.eql("Hi!");
+    context("without reset", () => {
+      it("should have pending messages", () => {
+        _alertMessagesCount_().should.eql(1);
+        _alert_messages_[0].should.eql("Initial Alert");
+      });
     });
 
-    it("shows a confirm when the button is clicked", function() {
-      _dispatch_("click", document.querySelector("#confirm"));
-
-      _shiftConfirmMessage_().should.eql("Are you sure?");
+    context("with hard reset", () => {
+      it("should have pending messages", () => {
+        _resetAll_();
+        _alertMessagesCount_().should.eql(1);
+        _alert_messages_[0].should.eql("Initial Alert");
+      });
     });
 
+    context("with soft reset", () => {
+      beforeEach(() => {
+        _resetUserInteractions_();
+      })
 
-    it("shows a prompt when the button is clicked", function() {
-      _dispatch_("click", document.querySelector("#prompt"));
+      it("should have no pending messages", () => {
+        _alertMessagesCount_().should.eql(0);
+      });
 
-      _shiftPromptMessage_().should.eql("Please tell us your name");
+      it("shows an alert when the button is clicked", function() {
+        _dispatch_("click", document.querySelector("#alert"));
+
+        _shiftAlertMessage_().should.eql("Hi!");
+      });
+
+      it("shows a confirm when the button is clicked", function() {
+        _dispatch_("click", document.querySelector("#confirm"));
+
+        _shiftConfirmMessage_().should.eql("Are you sure?");
+      });
+
+      it("shows a prompt when the button is clicked", function() {
+        _dispatch_("click", document.querySelector("#prompt"));
+
+        _shiftPromptMessage_().should.eql("Please tell us your name");
+      });
+
+      it("allows stubbing prompt interaction", function() {
+        _stubPromptResponse_("Mumuki");
+
+        _dispatch_("click", document.querySelector("#prompt-and-alert"));
+
+        "Please tell us who you are".should.eql(_shiftPromptMessage_());
+        "Hello Mumuki".should.eql(_shiftAlertMessage_());
+
+        _stubPromptResponse_("Node");
+
+        _dispatch_("click", document.querySelector("#prompt-and-alert"));
+
+        "Please tell us who you are".should.eql(_shiftPromptMessage_());
+        "Hello Node".should.eql(_shiftAlertMessage_());
+      });
+
+      it("allows stubbing confirm interaction", function() {
+        _stubConfirmResponse_(false);
+
+        _dispatch_("click", document.querySelector("#confirm-and-alert"));
+
+        "Are you really sure?".should.eql(_shiftConfirmMessage_());
+        "Boo".should.eql(_shiftAlertMessage_());
+
+        _stubConfirmResponse_(true);
+
+        _dispatch_("click", document.querySelector("#confirm-and-alert"));
+
+        "Are you really sure?".should.eql(_shiftConfirmMessage_());
+        "Yay".should.eql(_shiftAlertMessage_());
+      });
+
+      it("allows stubbing sequential prompt interaction", function() {
+        _stubPromptResponse_("Node");
+        _stubPromptResponse_("Mumuki");
+        _stubPromptResponse_("JS");
+
+        _dispatch_("click", document.querySelector("#prompt-and-alert"));
+        _dispatch_("click", document.querySelector("#prompt-and-alert"));
+        _dispatch_("click", document.querySelector("#prompt-and-alert"));
+
+        _alertMessagesCount_().should.eql(3);
+        _promptMessagesCount_().should.eql(3);
+
+        "Hello Node".should.eql(_shiftAlertMessage_());
+        "Hello Mumuki".should.eql(_shiftAlertMessage_());
+        "Hello JS".should.eql(_shiftAlertMessage_());
+
+        _alertMessagesCount_().should.eql(0);
+        _promptMessagesCount_().should.eql(3);
+      });
+
+      it("allows stubbing sequential confirm interaction", function() {
+        _stubConfirmResponse_(false);
+        _stubConfirmResponse_(true);
+
+        _dispatch_("click", document.querySelector("#confirm-and-alert"));
+        _dispatch_("click", document.querySelector("#confirm-and-alert"));
+
+        _alertMessagesCount_().should.eql(2);
+        _confirmMessagesCount_().should.eql(2);
+
+        "Are you really sure?".should.eql(_shiftConfirmMessage_());
+        "Boo".should.eql(_shiftAlertMessage_());
+        "Are you really sure?".should.eql(_shiftConfirmMessage_());
+        "Yay".should.eql(_shiftAlertMessage_());
+
+        _alertMessagesCount_().should.eql(0);
+        _confirmMessagesCount_().should.eql(0);
+      });
     });
-
-    it("allows stubbing prompt interaction", function() {
-      _stubPromptResponse_("Mumuki");
-
-      _dispatch_("click", document.querySelector("#prompt-and-alert"));
-
-      "Please tell us who you are".should.eql(_shiftPromptMessage_());
-      "Hello Mumuki".should.eql(_shiftAlertMessage_());
-
-      _stubPromptResponse_("Node");
-
-      _dispatch_("click", document.querySelector("#prompt-and-alert"));
-
-      "Please tell us who you are".should.eql(_shiftPromptMessage_());
-      "Hello Node".should.eql(_shiftAlertMessage_());
-    });
-
-    it("allows stubbing confirm interaction", function() {
-      _stubConfirmResponse_(false);
-
-      _dispatch_("click", document.querySelector("#confirm-and-alert"));
-
-      "Are you really sure?".should.eql(_shiftConfirmMessage_());
-      "Boo".should.eql(_shiftAlertMessage_());
-
-      _stubConfirmResponse_(true);
-
-      _dispatch_("click", document.querySelector("#confirm-and-alert"));
-
-      "Are you really sure?".should.eql(_shiftConfirmMessage_());
-      "Yay".should.eql(_shiftAlertMessage_());
-    });
-
-    it("allows stubbing sequential prompt interaction", function() {
-      _stubPromptResponse_("Node");
-      _stubPromptResponse_("Mumuki");
-      _stubPromptResponse_("JS");
-
-      _dispatch_("click", document.querySelector("#prompt-and-alert"));
-      _dispatch_("click", document.querySelector("#prompt-and-alert"));
-      _dispatch_("click", document.querySelector("#prompt-and-alert"));
-
-      _alertMessagesCount_().should.eql(3);
-      _promptMessagesCount_().should.eql(3);
-
-      "Hello Node".should.eql(_shiftAlertMessage_());
-      "Hello Mumuki".should.eql(_shiftAlertMessage_());
-      "Hello JS".should.eql(_shiftAlertMessage_());
-
-      _alertMessagesCount_().should.eql(0);
-      _promptMessagesCount_().should.eql(3);
-    });
-
-
-    it("allows stubbing sequential confirm interaction", function() {
-      _stubConfirmResponse_(false);
-      _stubConfirmResponse_(true);
-
-      _dispatch_("click", document.querySelector("#confirm-and-alert"));
-      _dispatch_("click", document.querySelector("#confirm-and-alert"));
-
-      _alertMessagesCount_().should.eql(2);
-      _confirmMessagesCount_().should.eql(2);
-
-      "Are you really sure?".should.eql(_shiftConfirmMessage_());
-      "Boo".should.eql(_shiftAlertMessage_());
-      "Are you really sure?".should.eql(_shiftConfirmMessage_());
-      "Yay".should.eql(_shiftAlertMessage_());
-
-      _alertMessagesCount_().should.eql(0);
-      _confirmMessagesCount_().should.eql(0);
-    });
-
-
   })
 
   context("deprecated API", () => {

@@ -66,7 +66,6 @@ global._originalDocument_ = null;
 global._resetDocument_ = () => {
   global.document = _.cloneDeep(global._originalDocument_);
   const context = _.assign({}, browserPolyfills, { window: global.window, document: global.document  });
-  require("./browser-test-polyfills");
 
   runScripts(document, context);
   _dispatch_("DOMContentLoaded");
@@ -76,15 +75,16 @@ global._resetDocument_ = () => {
  * Resets the document, interactions and nock state
  */
 global._resetAll_ = () => {
-  global._resetDocument_();
   global._resetUserInteractions_();
   global._resetHttpInteractions_();
+  global._resetDocument_();
 };
 
 jsdom.env(request.html, [], (errors, window) => {
   global.window = window;
   global.oldDocument = window.document;
   global._originalDocument_ = global.oldDocument;
+  require("./browser-test-polyfills");
   global._resetAll_();
   runTests(request.tests);
 });
