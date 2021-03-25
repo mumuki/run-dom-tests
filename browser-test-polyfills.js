@@ -52,8 +52,8 @@ global._nock_ = require("nock");
  * Waits for a condition to occur, and then executes an action.
  * This function will check for the condition with a period of `WAIT_FOR_TIMEOUT`.
  *
- * @param {() => boolean} condition the condition to wait
- * @param {() => ()} action the action to execute
+ * @param {function():boolean} condition the condition to wait
+ * @param {function():void} action the action to execute
  *
  * @see WAIT_FOR_TIMEOUT
  */

@@ -187,75 +187,6 @@ describe("HTTP Interactions", function() {
 ## Members
 
 <dl>
-<dt><del><a href="#oldDocument">oldDocument</a></del></dt>
-<dd></dd>
-<dt><a href="#_originalDocument_">_originalDocument_</a> : <code>HTMLDocument</code></dt>
-<dd><p>The original HTML document, before any JavaScript actions
-are executed</p>
-</dd>
-</dl>
-
-## Constants
-
-<dl>
-<dt><a href="#WAIT_FOR_TIMEOUT">WAIT_FOR_TIMEOUT</a> : <code>number</code></dt>
-<dd><p>Polling period of <code>_waitFor_</code></p>
-</dd>
-</dl>
-
-## Functions
-
-<dl>
-<dt><a href="#_resetDocument_">_resetDocument_()</a></dt>
-<dd><p>Resets the <code>document</code> to its original state,
-discarding every document polyfill
-and then runs its scripts again.</p>
-<p><code>window</code> is not cleared.</p>
-</dd>
-<dt><a href="#_resetAll_">_resetAll_()</a></dt>
-<dd><p>Resets the document, interactions and nock state</p>
-</dd>
-</dl>
-
-<a name="oldDocument"></a>
-
-## ~~oldDocument~~
-***Deprecated***
-
-**Kind**: global variable
-<a name="_originalDocument_"></a>
-
-## \_originalDocument\_ : <code>HTMLDocument</code>
-The original HTML document, before any JavaScript actions
-are executed
-
-**Kind**: global variable
-<a name="WAIT_FOR_TIMEOUT"></a>
-
-## WAIT\_FOR\_TIMEOUT : <code>number</code>
-Polling period of `_waitFor_`
-
-**Kind**: global constant
-<a name="_resetDocument_"></a>
-
-## \_resetDocument\_()
-Resets the `document` to its original state,
-discarding every document polyfill
-and then runs its scripts again.
-
-`window` is not cleared.
-
-**Kind**: global function
-<a name="_resetAll_"></a>
-
-## \_resetAll\_()
-Resets the document, interactions and nock state
-
-**Kind**: global function
-franco@balaan:~/Documents/mumuki/run-dom-tests$ jsdoc2md browser-test-polyfills.js run-dom-tests.js
-## Members
-
-<dl>
 <dt><a href="#_nock_">_nock_</a></dt>
 <dd><p>nock object for mocking http interactions</p>
 </dd>
@@ -355,8 +286,8 @@ This function will check for the condition with a period of `WAIT_FOR_TIMEOUT`.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| condition | <code>\*</code> | the condition to wait |
-| action | <code>\*</code> | the action to execute |
+| condition | <code>function</code> | the condition to wait |
+| action | <code>function</code> | the action to execute |
 
 <a name="oldDocument"></a>
 
@@ -475,13 +406,13 @@ Answers the number of the pending prompt message to check
 **Returns**: <code>number</code> - the pending messages count to check
 <a name="_resetUserInteractions_"></a>
 
-## \_resetInteractions\_()
+## \_resetUserInteractions\_()
 Reset all stubs and messages
 
 **Kind**: global function
 <a name="_resetHttpInteractions_"></a>
 
-## \_resetNock\_()
+## \_resetHttpInteractions\_()
 Reset nock state
 
 **Kind**: global function
