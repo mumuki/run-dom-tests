@@ -153,4 +153,9 @@ global._resetInteractions_ = () => {
   global._prompt_responses_ = [];
 };
 
-global._resetInteractions_();
+/**
+ * Reset nock state
+ */
+global._resetNock_ = () => {
+  global._nock_.cleanAll();
+}

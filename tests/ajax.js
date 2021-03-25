@@ -30,20 +30,38 @@ module.exports = {
 
   "tests": `
 describe("ajax", function() {
-  it("shows the downloaded content when the button is clicked", function(done) {
-    document.querySelector("#data").innerHTML.should.eql("Nothing yet...");
+  context('deprecated API', () => {
+    it("shows the downloaded content when the button is clicked", function(done) {
+      document.querySelector("#data").innerHTML.should.eql("Nothing yet...");
 
-    _nock_.cleanAll();
-    const mockedGet = _nock_("https://some-domain.com/")
-      .get("/some-data.json")
-      .reply(200, { content: "Some remote data" });
+      _nock_.cleanAll();
+      const mockedGet = _nock_("https://some-domain.com/")
+        .get("/some-data.json")
+        .reply(200, { content: "Some remote data" });
 
-    _dispatch_('click', document.querySelector("#get-data"));
+      _dispatch_('click', document.querySelector("#get-data"));
 
-    _wait_for_(() => mockedGet.isDone(), () => {
-      document.querySelector("#data").innerHTML.should.eql("Some remote data");
-      done();
+      _wait_for_(() => mockedGet.isDone(), () => {
+        document.querySelector("#data").innerHTML.should.eql("Some remote data");
+        done();
+      });
     });
-  });
+  })
+
+  context('current API', () => {
+    beforeEach(() => _resetAll_());
+
+    it("shows the downloaded content when the button is clicked", function(done) {
+      document.querySelector("#data").innerHTML.should.eql("Nothing yet...");
+      const mockedGet = _nock_("https://some-domain.com/")
+        .get("/some-data.json")
+        .reply(200, { content: "Some remote data" });
+      _dispatch_('click', document.querySelector("#get-data"));
+      _waitFor_(() => mockedGet.isDone(), () => {
+        document.querySelector("#data").innerHTML.should.eql("Some remote data");
+        done();
+      });
+    });
+  })
 });
 `};
