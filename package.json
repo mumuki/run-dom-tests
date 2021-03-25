@@ -9,7 +9,19 @@
   "bin": {
     "run-dom-tests": "./run-dom-tests.js"
   },
-  "author": "",
+  "author": "Rodrigo Alfonso",
+  "contributors": [
+    "Franco Leonardo Bulgarelli",
+    "Luis Cannavo"
+  ],
+  "bugs": {
+    "url": "https://github.com/mumuki/run-dom-tests/issues"
+  },
+  "homepage": "https://github.com/mumuki/run-dom-tests#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mumuki/run-dom-tests.git"
+  },
   "license": "ISC",
   "dependencies": {
     "atob": "^2.1.2",
