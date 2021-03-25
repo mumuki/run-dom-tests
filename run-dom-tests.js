@@ -27,7 +27,9 @@ function wrapCode(code) {
 function runTests(testCode) {
   const tempFile = tmp.fileSync();
   fs.writeFileSync(tempFile.name, `
-    const should  = require('${__dirname}/node_modules/chai').should();
+    const chai = require('${__dirname}/node_modules/chai');
+    chai.use(require('${__dirname}/node_modules/chai-dom'));
+    const should = chai.should();
     ${testCode}
   `);
 
