@@ -145,7 +145,7 @@ global._promptMessagesCount_ = () => global._prompt_messages_.length;
 /**
  * Reset all stubs and messages
  */
-global._resetInteractions_ = () => {
+global._resetUserInteractions_ = () => {
   global._alert_messages_ = [];
   global._confirm_messages_ = [];
   global._prompt_messages_ = [];
@@ -156,6 +156,6 @@ global._resetInteractions_ = () => {
 /**
  * Reset nock state
  */
-global._resetNock_ = () => {
+global._resetHttpInteractions_ = () => {
   global._nock_.cleanAll();
 }

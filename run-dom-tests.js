@@ -73,8 +73,8 @@ global._resetDocument_ = () => {
  */
 global._resetAll_ = () => {
   global._resetDocument_();
-  global._resetInteractions_();
-  global._resetNock_();
+  global._resetUserInteractions_();
+  global._resetHttpInteractions_();
 };
 
 jsdom.env(request.html, [], (errors, window) => {

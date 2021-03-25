@@ -35,7 +35,7 @@ module.exports = {
 describe("events", function() {
   context("current API", () => {
     beforeEach(() => {
-      _resetInteractions_();
+      _resetUserInteractions_();
     })
 
     it("shows an alert when the button is clicked", function() {

@@ -61,7 +61,7 @@ describe("User interactions", () => {
     // call before each test in
     // order to clear user interactions registered and tested
     // through _stubXxxResponse_ and _shiftXxxMessage_
-    _resetInteractions_();
+    _resetUserInteractions_();
 
     // if you also need to reset the document state
     // you can call `_resetDocument_()`
@@ -162,7 +162,7 @@ describe("HTTP Interactions", function() {
     _resetAll_();
 
     // if only http interactions need to be reseted,
-    // call _resetNock_() instead
+    // call _resetHttpInteractions_() instead
   });
 
   it("shows the downloaded content when the button is clicked", function(done) {
@@ -320,10 +320,10 @@ prompt messages to dequeue, undefined is returned</p>
 <dt><a href="#_promptMessagesCount_">_promptMessagesCount_()</a> ⇒ <code>number</code></dt>
 <dd><p>Answers the number of the pending prompt message to check</p>
 </dd>
-<dt><a href="#_resetInteractions_">_resetInteractions_()</a></dt>
+<dt><a href="#_resetUserInteractions_">_resetUserInteractions_()</a></dt>
 <dd><p>Reset all stubs and messages</p>
 </dd>
-<dt><a href="#_resetNock_">_resetNock_()</a></dt>
+<dt><a href="#_resetHttpInteractions_">_resetHttpInteractions_()</a></dt>
 <dd><p>Reset nock state</p>
 </dd>
 <dt><a href="#_resetDocument_">_resetDocument_()</a></dt>
@@ -473,13 +473,13 @@ Answers the number of the pending prompt message to check
 
 **Kind**: global function
 **Returns**: <code>number</code> - the pending messages count to check
-<a name="_resetInteractions_"></a>
+<a name="_resetUserInteractions_"></a>
 
 ## \_resetInteractions\_()
 Reset all stubs and messages
 
 **Kind**: global function
-<a name="_resetNock_"></a>
+<a name="_resetHttpInteractions_"></a>
 
 ## \_resetNock\_()
 Reset nock state
