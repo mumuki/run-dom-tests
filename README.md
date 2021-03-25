@@ -113,6 +113,75 @@ describe("API", () => {
 ## Members
 
 <dl>
+<dt><del><a href="#oldDocument">oldDocument</a></del></dt>
+<dd></dd>
+<dt><a href="#_originalDocument_">_originalDocument_</a> : <code>HTMLDocument</code></dt>
+<dd><p>The original HTML document, before any JavaScript actions
+are executed</p>
+</dd>
+</dl>
+
+## Constants
+
+<dl>
+<dt><a href="#WAIT_FOR_TIMEOUT">WAIT_FOR_TIMEOUT</a> : <code>number</code></dt>
+<dd><p>Polling period of <code>_waitFor_</code></p>
+</dd>
+</dl>
+
+## Functions
+
+<dl>
+<dt><a href="#_resetDocument_">_resetDocument_()</a></dt>
+<dd><p>Resets the <code>document</code> to its original state,
+discarding every document polyfill
+and then runs its scripts again.</p>
+<p><code>window</code> is not cleared.</p>
+</dd>
+<dt><a href="#_resetAll_">_resetAll_()</a></dt>
+<dd><p>Resets the document, interactions and nock state</p>
+</dd>
+</dl>
+
+<a name="oldDocument"></a>
+
+## ~~oldDocument~~
+***Deprecated***
+
+**Kind**: global variable
+<a name="_originalDocument_"></a>
+
+## \_originalDocument\_ : <code>HTMLDocument</code>
+The original HTML document, before any JavaScript actions
+are executed
+
+**Kind**: global variable
+<a name="WAIT_FOR_TIMEOUT"></a>
+
+## WAIT\_FOR\_TIMEOUT : <code>number</code>
+Polling period of `_waitFor_`
+
+**Kind**: global constant
+<a name="_resetDocument_"></a>
+
+## \_resetDocument\_()
+Resets the `document` to its original state,
+discarding every document polyfill
+and then runs its scripts again.
+
+`window` is not cleared.
+
+**Kind**: global function
+<a name="_resetAll_"></a>
+
+## \_resetAll\_()
+Resets the document, interactions and nock state
+
+**Kind**: global function
+franco@balaan:~/Documents/mumuki/run-dom-tests$ jsdoc2md browser-test-polyfills.js run-dom-tests.js
+## Members
+
+<dl>
 <dt><a href="#_nock_">_nock_</a></dt>
 <dd><p>nock object for mocking http interactions</p>
 </dd>
@@ -120,11 +189,27 @@ describe("API", () => {
 <dd><p>Waits for a condition to occur, and then executes an action.
 This function will check for the condition with a period of <code>WAIT_FOR_TIMEOUT</code>.</p>
 </dd>
+<dt><del><a href="#oldDocument">oldDocument</a></del></dt>
+<dd></dd>
+<dt><a href="#_originalDocument_">_originalDocument_</a> : <code>HTMLDocument</code></dt>
+<dd><p>The original HTML document, before any JavaScript actions
+are executed</p>
+</dd>
+</dl>
+
+## Constants
+
+<dl>
+<dt><a href="#WAIT_FOR_TIMEOUT">WAIT_FOR_TIMEOUT</a> : <code>number</code></dt>
+<dd><p>Polling period of <code>_waitFor_</code></p>
+</dd>
 </dl>
 
 ## Functions
 
 <dl>
+<dt><del><a href="#_wait_for_">_wait_for_()</a></del></dt>
+<dd></dd>
 <dt><a href="#_dispatch_">_dispatch_(type, node)</a></dt>
 <dd><p>Simulates the dispatch of an event of the given type
 to the given node</p>
@@ -142,7 +227,7 @@ to the given node</p>
 <p>Subsequent calls to this function will produce different results. When there are no more
 alert messages to dequeue, undefined is returned</p>
 </dd>
-<dt><a href="#_shiftConfirmMessage_">_shiftConfirmMessage_()</a> ⇒ <code>string</code></dt>
+<dt><a href="#_shiftConfirmMessage_">_shiftConfirmMessage_()</a> ⇒ <code>boolean</code></dt>
 <dd><p>Dequeues the first pending confirm message to check.</p>
 <p>Subsequent calls to this function will produce different results. When there are no more
 confirm messages to dequeue, undefined is returned</p>
@@ -163,6 +248,18 @@ prompt messages to dequeue, undefined is returned</p>
 </dd>
 <dt><a href="#_resetInteractions_">_resetInteractions_()</a></dt>
 <dd><p>Reset all stubs and messages</p>
+</dd>
+<dt><a href="#_resetNock_">_resetNock_()</a></dt>
+<dd><p>Reset nock state</p>
+</dd>
+<dt><a href="#_resetDocument_">_resetDocument_()</a></dt>
+<dd><p>Resets the <code>document</code> to its original state,
+discarding every document polyfill
+and then runs its scripts again.</p>
+<p><code>window</code> is not cleared.</p>
+</dd>
+<dt><a href="#_resetAll_">_resetAll_()</a></dt>
+<dd><p>Resets the document, interactions and nock state</p>
 </dd>
 </dl>
 
@@ -187,6 +284,31 @@ This function will check for the condition with a period of `WAIT_FOR_TIMEOUT`.
 | condition | <code>\*</code> | the condition to wait |
 | action | <code>\*</code> | the action to execute |
 
+<a name="oldDocument"></a>
+
+## ~~oldDocument~~
+***Deprecated***
+
+**Kind**: global variable
+<a name="_originalDocument_"></a>
+
+## \_originalDocument\_ : <code>HTMLDocument</code>
+The original HTML document, before any JavaScript actions
+are executed
+
+**Kind**: global variable
+<a name="WAIT_FOR_TIMEOUT"></a>
+
+## WAIT\_FOR\_TIMEOUT : <code>number</code>
+Polling period of `_waitFor_`
+
+**Kind**: global constant
+<a name="_wait_for_"></a>
+
+## ~~\_wait\_for\_()~~
+***Deprecated***
+
+**Kind**: global function
 <a name="_dispatch_"></a>
 
 ## \_dispatch\_(type, node)
@@ -238,14 +360,14 @@ alert messages to dequeue, undefined is returned
 **Returns**: <code>string</code> - the first pending alert message
 <a name="_shiftConfirmMessage_"></a>
 
-## \_shiftConfirmMessage\_() ⇒ <code>string</code>
+## \_shiftConfirmMessage\_() ⇒ <code>boolean</code>
 Dequeues the first pending confirm message to check.
 
 Subsequent calls to this function will produce different results. When there are no more
 confirm messages to dequeue, undefined is returned
 
 **Kind**: global function
-**Returns**: <code>string</code> - the first pending confirm message
+**Returns**: <code>boolean</code> - the first pending confirm message
 <a name="_shiftPromptMessage_"></a>
 
 ## \_shiftPromptMessage\_() ⇒ <code>string</code>
@@ -283,3 +405,25 @@ Answers the number of the pending prompt message to check
 Reset all stubs and messages
 
 **Kind**: global function
+<a name="_resetNock_"></a>
+
+## \_resetNock\_()
+Reset nock state
+
+**Kind**: global function
+<a name="_resetDocument_"></a>
+
+## \_resetDocument\_()
+Resets the `document` to its original state,
+discarding every document polyfill
+and then runs its scripts again.
+
+`window` is not cleared.
+
+**Kind**: global function
+<a name="_resetAll_"></a>
+
+## \_resetAll\_()
+Resets the document, interactions and nock state
+
+**Kind**: global function  
