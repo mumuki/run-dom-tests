@@ -15,4 +15,5 @@ try {
   console.log(output.toString());
 } catch (e) {
   console.log(e.stdout.toString());
+  process.exit(1);
 }

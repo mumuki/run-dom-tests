@@ -27,7 +27,9 @@ function wrapCode(code) {
 function runTests(testCode) {
   const tempFile = tmp.fileSync();
   fs.writeFileSync(tempFile.name, `
-    const should  = require('${__dirname}/node_modules/chai').should();
+    const chai = require('${__dirname}/node_modules/chai');
+    chai.use(require('${__dirname}/node_modules/chai-dom'));
+    const should = chai.should();
     ${testCode}
   `);
 
@@ -39,14 +41,50 @@ function runTests(testCode) {
   });
 }
 
-jsdom.env(request.html, [], (errors, window) => {
-  global.window = window;
-  global.document = window.document;
-  global.oldDocument = _.cloneDeep(document);
-  const context = _.assign({}, browserPolyfills, { window, document });
+/**
+ * Use `_originalDocument_` instead
+ *
+ * @deprecated
+ **/
+global.oldDocument = null;
+
+/**
+ * The original HTML document, before any JavaScript actions
+ * are executed
+ *
+ * @type HTMLDocument
+ */
+global._originalDocument_ = null;
+
+/**
+ * Resets the `document` to its original state,
+ * discarding every document polyfill
+ * and then runs its scripts again.
+ *
+ * `window` is not cleared.
+ */
+global._resetDocument_ = () => {
+  global.document = _.cloneDeep(global._originalDocument_);
+  const context = _.assign({}, browserPolyfills, { window: global.window, document: global.document  });
   require("./browser-test-polyfills");
 
   runScripts(document, context);
   _dispatch_("DOMContentLoaded");
+};
+
+/**
+ * Resets the document, interactions and nock state
+ */
+global._resetAll_ = () => {
+  global._resetDocument_();
+  global._resetUserInteractions_();
+  global._resetHttpInteractions_();
+};
+
+jsdom.env(request.html, [], (errors, window) => {
+  global.window = window;
+  global.oldDocument = window.document;
+  global._originalDocument_ = global.oldDocument;
+  global._resetAll_();
   runTests(request.tests);
 });
