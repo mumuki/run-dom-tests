@@ -15,9 +15,17 @@ module.exports = {
 
   "tests": `
 describe("dom things", function() {
-  it("changes the page title", function() {
-    oldDocument.title.should.be.eql("old title");
-    document.title.should.be.eql("Title changed! #HACKERMAN");
-  });
+  context('deprecated API', () => {
+    it("changes the page title", function() {
+      oldDocument.title.should.be.eql("old title");
+      document.title.should.be.eql("Title changed! #HACKERMAN");
+    });
+  })
+  context('current API', () => {
+    it("changes the page title", function() {
+      _originalDocument_.title.should.be.eql("old title");
+      document.title.should.be.eql("Title changed! #HACKERMAN");
+    });
+  })
 });
 `};
